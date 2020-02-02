@@ -1,2 +1,4 @@
 # node-scan-dir
-Scan given directory
+Scans given directory
+
+it's just a sandbox

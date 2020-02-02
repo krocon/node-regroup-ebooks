@@ -1,0 +1,37 @@
+{
+  "name": "node-scan-dir",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Find duplicate files (recursive) in given directories",
+  "keywords": [
+    "find",
+    "walk",
+    "tree",
+    "files",
+    "recursive",
+    "md5"
+  ],
+  "author": {
+    "name": "Marc Kronberg",
+    "email": "krocon@gmail.com",
+    "url": "https://gui.expert/"
+  },
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "!test"
+  ],
+  "dependencies": {
+    "walkdir": "^0.4.1",
+    "npmlog": "^4.1.2"
+  },
+  "devDependencies": {
+    "es6-promise": "^3.0.2"
+  },
+  "readmeFilename": "README.md",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krocon/node-scan-dir.git"
+  }
+}
