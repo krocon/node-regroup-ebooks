@@ -22,8 +22,9 @@
     "!test"
   ],
   "dependencies": {
-    "walkdir": "^0.4.1",
-    "npmlog": "^4.1.2"
+    "npmlog": "^4.1.2",
+    "shelljs": "^0.8.3",
+    "walkdir": "^0.4.1"
   },
   "devDependencies": {
     "es6-promise": "^3.0.2"
