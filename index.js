@@ -85,7 +85,6 @@ async function test() {
     'e:/leeching/',
     'y:/ebooks/comics/_deu/__temp'
   ]);
-
   save2disk('./out/files.txt', rows.join('\n'));
 
   const o = createStructure(rows);
