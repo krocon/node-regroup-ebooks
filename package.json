@@ -19,6 +19,7 @@
   "main": "index.js",
   "files": [
     "index.js",
+    "regroup.mjs",
     "!test"
   ],
   "dependencies": {
