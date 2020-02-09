@@ -11,9 +11,20 @@ function splitWords(res) {
   }
   const splitPattern = '(\\W|\\-|_|\\(|\\)|\\[|\\]|\\{|\\}|\\.)';
   const regex = new RegExp(splitPattern, 'g');
+  let pureDigitsIdx = -1;
   res.words = name
     .split(regex)
     .filter(s => s && s.replace(regex, ''))
+    .filter((s, i) => {
+      if (pureDigitsIdx > -1 && i > pureDigitsIdx) {
+        return false;
+      }
+      let pureDigits = s.match(/^(\d+)$/);
+      if (pureDigits) {
+        pureDigitsIdx = i;
+      }
+      return !pureDigits
+    })
     .map(s => s.toLowerCase());
 }
 
@@ -87,9 +98,10 @@ function calcTargets(ret) {
 
     } else {
 
-      for (let i = 1; i < weights.length; i++) {
-        if ((weights[i] < lastWeight && weights[i]===0 /*&& words[lastIdx].length > 3*/) || i === weights.length - 1) {
-          item.target = item.target + words.slice(lastIdx, i).join('-') + path.sep;
+      for (let i = 0; i < weights.length; i++) {
+        if ((weights[i] < lastWeight && weights[i] === 0 /*&& words[lastIdx].length > 3*/) || i === weights.length - 1) {
+          let sliceEnd = weights[i] === 0 ? i : i + 1;
+          item.target = item.target + words.slice(lastIdx, sliceEnd).join('-') + path.sep;
           lastIdx = i;
           lastWeight = weights[i];
         }

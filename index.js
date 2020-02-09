@@ -117,7 +117,7 @@ async function test() {
     fixGermanUmlauts: true,
     killSonderzeichen: true,
 
-    logOnly: true,
+    logOnly: false,
     logFileList: './out/00_files.txt',
     logStructure: './out/01_struc.json',
     logDebugList: './out/02_debug.json',
