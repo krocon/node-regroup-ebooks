@@ -76,19 +76,22 @@ function calcTargets(ret) {
   for (const item of ret) {
     const weights = item.weights;
     const words = item.words;
-    let weight = weights[0];
-    item.target = '';
 
-    if (weight === 0) {
+    let lastIdx = 0;
+    let lastWeight = weights[lastIdx];
+
+    item.target = '';
+    if (lastWeight === 0) {
       item.target = '';/*item.path + path.sep +*/
-      item.name + item.ext;
+      //item.name + item.ext;
 
     } else {
-      let lastIdx = 0;
+
       for (let i = 1; i < weights.length; i++) {
-        if (weights[i] < weight || i === weights.length - 1) {
+        if ((weights[i] < lastWeight && weights[i]===0 /*&& words[lastIdx].length > 3*/) || i === weights.length - 1) {
           item.target = item.target + words.slice(lastIdx, i).join('-') + path.sep;
           lastIdx = i;
+          lastWeight = weights[i];
         }
         if (weights[i] === 0) {
           break;
@@ -143,13 +146,17 @@ function killSonderzeichen(ret) {
 
 export function regroup(object, options) {
   let ret = calcWeights(object);
+
   calcTargets(ret);
   calcSubDirectories(ret, options);
+
   if (options.fixGermanUmlauts) {
     fixGermanUmlauts(ret);
   }
+
   if (options.killSonderzeichen) {
     killSonderzeichen(ret);
   }
+
   return ret;
 }
