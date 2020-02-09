@@ -39,25 +39,15 @@ export async function scan(dirarr) {
       no_return: false,
       find_links: false,
       filter: (p, files) => {
-        // console.info('path', p); // TODO weg
-        // console.info('       files', files); // TODO weg
-
         if (p.indexOf('.') === 0) return [];
-
         return files;
-        // return files.filter(n => {
-        //   let ext = path.extname(n);
-        //   return ext === '.js'; // || n.indexOf('.') === -1;
-        // });
       }
     };
     let result = await walk.async(dir, walkOptions);
 
     const ret = [];
     for (let [p, stat] of Object.entries(result)) {
-      // if (path.endsWith('.js')) {
       if (stat.size > 0) {
-        // log.info(`${path} mode:${stat.mode} size: ${stat.size}`);
         let ext = path.extname(p);
         if (ext === '.cbr' || ext === '.cbz') {
           ret.push(p);
@@ -82,16 +72,26 @@ function save2disk(filename, data) {
 
 async function test() {
   let rows = await scan([
+    // 'e:/leeching/aa/'
     'e:/leeching/',
-    'y:/ebooks/comics/_deu/__temp'
+    // 'y:/ebooks/comics/_deu/__temp'
   ]);
-  save2disk('./out/files.txt', rows.join('\n'));
+  save2disk('./out/00_files.txt', rows.join('\n'));
 
   const o = createStructure(rows);
-  save2disk('./out/struc.json', JSON.stringify(o, null, 2));
+  save2disk('./out/01_struc.json', JSON.stringify(o, null, 2));
 
-  let actions = regroup(o);
-  save2disk('./out/actions.json', JSON.stringify(actions, null, 2));
+  let actions = regroup(o, {
+    targetDir: 'e:/leeching-out',
+    diverseSubDir: '_diverse',
+    extraSubDirFirstLetterLowercase: true
+  });
+  save2disk('./out/02_debug.json', JSON.stringify(actions, null, 2));
+
+  let simple = actions.map(item => {
+    return {source: item.source, target: item.target};
+  });
+  save2disk('./out/03_actions.json', JSON.stringify(simple, null, 2));
 }
 
 test();
