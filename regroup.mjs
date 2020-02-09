@@ -5,11 +5,16 @@ import path from "path";
 function splitWords(res) {
   let p = res.path;
   let name = res.name;
+  if (name.match(/^[\D]+[\d]+$/)) {
+    // Spawn101 --> Spawn 101
+    name = name.replace(/(\D+)(\d+)/, '$1 $2');
+  }
   const splitPattern = '(\\W|\\-|_|\\(|\\)|\\[|\\]|\\{|\\}|\\.)';
   const regex = new RegExp(splitPattern, 'g');
   res.words = name
     .split(regex)
-    .filter(s => s && s.replace(regex, ''));
+    .filter(s => s && s.replace(regex, ''))
+    .map(s => s.toLowerCase());
 }
 
 function calcWeights(object) {
@@ -82,8 +87,8 @@ function calcTargets(ret) {
       let lastIdx = 0;
       for (let i = 1; i < weights.length; i++) {
         if (weights[i] < weight || i === weights.length - 1) {
-          item.target = item.target + words.slice(lastIdx, i).join(' ') + path.sep;
-          lastIdx = i + 1;
+          item.target = item.target + words.slice(lastIdx, i).join('-') + path.sep;
+          lastIdx = i;
         }
         if (weights[i] === 0) {
           break;
@@ -112,9 +117,39 @@ function calcSubDirectories(ret, options) {
   }
 }
 
+function fixGermanUmlauts(ret) {
+  for (const item of ret) {
+    item.target = item.target
+      .replace(/ä/g, 'ae')
+      .replace(/Ä/g, 'Ae')
+      .replace(/ü/g, 'ue')
+      .replace(/ü/g, 'ue')
+      .replace(/Ü/g, 'Ue')
+      .replace(/ö/g, 'oe')
+      .replace(/Ö/g, 'Oe')
+      .replace(/ß/g, 'ss')
+    ;
+  }
+  return ret;
+}
+
+function killSonderzeichen(ret) {
+  for (const item of ret) {
+    item.target = item.target
+      .replace(/[^a-zA-Z0-9\\()\[\]\-_\\. ]/g, '');
+  }
+  return ret;
+}
+
 export function regroup(object, options) {
   let ret = calcWeights(object);
   calcTargets(ret);
   calcSubDirectories(ret, options);
+  if (options.fixGermanUmlauts) {
+    fixGermanUmlauts(ret);
+  }
+  if (options.killSonderzeichen) {
+    killSonderzeichen(ret);
+  }
   return ret;
 }

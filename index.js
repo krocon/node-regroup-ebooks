@@ -23,7 +23,7 @@ function createStructure(rows) {
   return o;
 }
 
-export async function scan(dirarr) {
+async function scan(dirarr) {
   for (const dir of dirarr) {
     if (!dir) {
       throw new Error('Parameter dir is missing: ' + dir);
@@ -59,7 +59,6 @@ export async function scan(dirarr) {
   return back;
 }
 
-
 function save2disk(filename, data) {
   let dir = path.dirname(filename);
   shell.mkdir('-p', dir);
@@ -70,28 +69,54 @@ function save2disk(filename, data) {
   });
 }
 
-async function test() {
-  let rows = await scan([
-    // 'e:/leeching/aa/'
-    'e:/leeching/',
-    // 'y:/ebooks/comics/_deu/__temp'
-  ]);
-  save2disk('./out/00_files.txt', rows.join('\n'));
+async function group(options) {
+
+  let rows = await scan(options.sourceDirs);
+  if (options.logFileList) {
+    save2disk(options.logFileList, rows.join('\n'));
+  }
 
   const o = createStructure(rows);
-  save2disk('./out/01_struc.json', JSON.stringify(o, null, 2));
+  if (options.logStructure) {
+    save2disk(options.logStructure, JSON.stringify(o, null, 2));
+  }
 
-  let actions = regroup(o, {
-    targetDir: 'e:/leeching-out',
-    diverseSubDir: '_diverse',
-    extraSubDirFirstLetterLowercase: true
-  });
-  save2disk('./out/02_debug.json', JSON.stringify(actions, null, 2));
+
+  let actions = regroup(o, options);
+  if (options.logDebugList) {
+    save2disk(options.logDebugList, JSON.stringify(actions, null, 2));
+  }
 
   let simple = actions.map(item => {
-    return {source: item.source, target: item.target};
+    return {
+      source: item.source,
+      target: item.target
+    };
   });
-  save2disk('./out/03_actions.json', JSON.stringify(simple, null, 2));
+  if (options.logActionList) {
+    save2disk(options.logActionList, JSON.stringify(simple, null, 2));
+  }
+}
+
+
+async function test() {
+  let options = {
+    sourceDirs: [
+      'e:/leeching/',
+      'y:/ebooks/comics/_deu/__temp'
+    ],
+    targetDir: 'e:/leeching-out',
+    diverseSubDir: '_diverse',
+    extraSubDirFirstLetterLowercase: true,
+    fixGermanUmlauts: true,
+    killSonderzeichen: true,
+
+    logFileList: './out/00_files.txt',
+    logStructure: './out/01_struc.json',
+    logDebugList: './out/02_debug.json',
+    logActionList: './out/03_actions.json',
+  };
+  await group(options);
 }
 
 test();
