@@ -5,8 +5,8 @@ import fs from "fs";
 import shell from "shelljs";
 import log from "npmlog";
 import walk from "walkdir";
-import {regroup} from "./regroup.mjs";
-
+import {regroup} from "./modules/regroup.mjs";
+import {move} from "./modules/fileutil.mjs";
 
 function createStructure(rows) {
   const o = {};
@@ -87,14 +87,20 @@ async function group(options) {
     save2disk(options.logDebugList, JSON.stringify(actions, null, 2));
   }
 
-  let simple = actions.map(item => {
-    return {
-      source: item.source,
-      target: item.target
-    };
-  });
   if (options.logActionList) {
+    let simple = actions.map(item => {
+      return {
+        source: item.source,
+        target: item.target
+      };
+    });
     save2disk(options.logActionList, JSON.stringify(simple, null, 2));
+  }
+
+  if (!options.logOnly) {
+    for (const action of actions) {
+      await move(action.source, action.target);
+    }
   }
 }
 
@@ -102,8 +108,8 @@ async function group(options) {
 async function test() {
   let options = {
     sourceDirs: [
-      'e:/leeching/',
-      'y:/ebooks/comics/_deu/__temp'
+      'e:/leeching',
+      // 'y:/ebooks/comics/_deu/__temp'
     ],
     targetDir: 'e:/leeching-out',
     diverseSubDir: '_diverse',
@@ -111,6 +117,7 @@ async function test() {
     fixGermanUmlauts: true,
     killSonderzeichen: true,
 
+    logOnly: true,
     logFileList: './out/00_files.txt',
     logStructure: './out/01_struc.json',
     logDebugList: './out/02_debug.json',
