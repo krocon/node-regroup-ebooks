@@ -13,6 +13,7 @@ function splitWords(res) {
   const regex = new RegExp(splitPattern, 'g');
   let pureDigitsIdx = -1;
   res.words = name
+    .replace(/^(\d+\w+)/g, '')
     .split(regex)
     .filter(s => s && s.replace(regex, ''))
     .filter((s, i) => {
