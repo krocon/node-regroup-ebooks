@@ -49,7 +49,7 @@ async function scan(dirarr) {
     for (let [p, stat] of Object.entries(result)) {
       if (stat.size > 0) {
         let ext = path.extname(p);
-        if (ext === '.cbr' || ext === '.cbz') {
+        if (ext === '.cbr' || ext === '.cbz' || ext === '.CBR' || ext === '.CBZ') {
           ret.push(p);
         }
       }
@@ -109,9 +109,9 @@ async function test() {
   let options = {
     sourceDirs: [
       // 'e:/leeching',
-      'y:/ebooks/comics/_deu/__temp'
+      'f:/ebooks/_deu/__temp2'
     ],
-    targetDir: 'y:/ebooks/comics/_deu/__temp2', //'e:/leeching-out',
+    targetDir: 'f:/ebooks/_deu/__temp3', //'e:/leeching-out',
     diverseSubDir: '_diverse',
     extraSubDirFirstLetterLowercase: true,
     fixGermanUmlauts: true,

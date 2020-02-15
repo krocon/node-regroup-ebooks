@@ -110,7 +110,7 @@ function calcTargets(ret) {
           break;
         }
       }
-      item.target = item.target + item.name + item.ext;
+      item.target = item.target + item.name.replace(/_/g, ' ') + item.ext.toLowerCase();
     }
   }
   return ret;
@@ -152,7 +152,7 @@ function fixGermanUmlauts(ret) {
 function killSonderzeichen(ret) {
   for (const item of ret) {
     item.target = item.target
-      .replace(/[^a-zA-Z0-9\\()\[\]\-_\\.: ]/g, '');
+      .replace(/[^a-zA-Z0-9&\\()\[\]\-_\\.: ]/g, '');
   }
   return ret;
 }
