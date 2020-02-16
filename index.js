@@ -71,6 +71,10 @@ function save2disk(filename, data) {
 
 async function group(options) {
 
+  if (options.silent || options.quite) {
+    log.level = 'error';
+  }
+
   let rows = await scan(options.sourceDirs);
   if (options.logFileList) {
     save2disk(options.logFileList, rows.join('\n'));

@@ -1,6 +1,6 @@
 {
   "name": "node-regroup-ebooks",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "description": "Find duplicate files (recursive) in given directories",
   "keywords": [
