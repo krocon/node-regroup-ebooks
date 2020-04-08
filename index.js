@@ -69,7 +69,7 @@ function save2disk(filename, data) {
   });
 }
 
-async function group(options) {
+export async function group(options) {
 
   if (options.silent || options.quite) {
     log.level = 'error';
