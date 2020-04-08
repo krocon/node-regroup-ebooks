@@ -1,6 +1,6 @@
 {
   "name": "node-regroup-ebooks",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "type": "module",
   "description": "Reorganization (grouping) of ebook files",
   "keywords": [
@@ -20,7 +20,9 @@
   "files": [
     "index.js",
     "modules/regroup.mjs",
-    "!test"
+    "modules/fileutil.mjs",
+    "!test",
+    "!out"
   ],
   "dependencies": {
     "fs-extra": "^8.1.0",
