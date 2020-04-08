@@ -112,10 +112,12 @@ async function group(options) {
 async function test() {
   let options = {
     sourceDirs: [
+      'f:/ebooks/_deu/__temp3'
       // 'e:/leeching',
-      'f:/ebooks/_deu/__temp2'
+      // 'e:/leeching/comics',
+      // 'f:/ebooks/_deu/__temp2'
     ],
-    targetDir: 'f:/ebooks/_deu/__temp3', //'e:/leeching-out',
+    targetDir: 'f:/ebooks/_deu/__temp2', //'e:/leeching-out',
     diverseSubDir: '_diverse',
     extraSubDirFirstLetterLowercase: true,
     fixGermanUmlauts: true,
