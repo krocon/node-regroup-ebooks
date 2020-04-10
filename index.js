@@ -65,7 +65,7 @@ function save2disk(filename, data) {
 
   fs.writeFileSync(filename, data, (err) => {
     if (err) throw err;
-    log.debug('Saved!', file);
+    log.log('Saved!', file);
   });
 }
 
