@@ -1,6 +1,6 @@
 {
   "name": "node-regroup-ebooks",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "type": "module",
   "description": "Reorganization (grouping) of ebook files",
   "keywords": [
@@ -38,6 +38,6 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/krocon/node-scan-dir.git"
+    "url": "https://github.com/krocon/node-regroup-ebooks.git"
   }
 }
